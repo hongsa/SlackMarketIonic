@@ -3,21 +3,20 @@
 
 <ion-list ng-controller="SlackDetailCtrl" >
 
-<ion-item class="list card">
+<ion-item class="list card" ng-repeat="item in slack.data">
 <div class="item">
-	<h2>{{slack.data.name}}</h2>
-	<p>{{slack.data.category}} / {{slack.data.created | date:'MM-dd'}}</p>
+	<h2>{{item.name}}</h2>
+	<p>{{item.category}} / {{item.created | date:'MM-dd'}}</p>
 </div>
 <div class="item item-body">
 	<p>
-		{{slack.data.description}}
+		{{item.description}}
 	</p>
 	<p>
-		<p>url : {{slack.data.url}}<br>
-			{{slack.data.type | slackType}} / {{slack.data.user_username}} 님</p>
+		<p>url : {{item.url}}<br>
+			{{item.type | slackType}} / {{item.user_username}} 님</p>
 		</p>
 	</div>
-
 </ion-item>
 </ion-list>
 
