@@ -2,6 +2,8 @@
 <ion-content class="padding">
 
 <ion-list ng-controller="SlackCtrl" >
+<ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+</ion-refresher>
 
 <ion-item class="list card" ng-repeat="item in slacks.data" href="#/tab/slack/{{item.id}}" >
 

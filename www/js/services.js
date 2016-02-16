@@ -5,6 +5,7 @@ angular.module('starter.services', [])
     request: function (config) {
       config.headers = config.headers || {};
       if ($window.localStorage.token) {
+        console.log(config)
         config.headers.Authorization = 'Token ' + $window.localStorage.token;
       }
       return config;

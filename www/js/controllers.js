@@ -1,5 +1,5 @@
-// var baseurl = "http://slack.jikbakguri.com"
-var baseurl = "http://127.0.0.1:8000"
+var baseurl = "http://slack.jikbakguri.com"
+// var baseurl = "http://127.0.0.1:8000"
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $ionicLoading) {
@@ -141,7 +141,24 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   function(err) {
     console.error('ERR', err);
   })
+  $scope.doRefresh = function(){
+
+    $http.get(baseurl + '/slacks/').then(function(resp) {
+      $scope.slacks ={};
+
+      console.log('Success',resp);
+      $scope.slacks = resp;
+    },
+    function(err) {
+      console.error('ERR', err);
+    })
+
+  }
+
+
 })
+
+
 
 .filter("slackType",function(){
   return function(value){
@@ -264,13 +281,8 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     function(err) {
       console.error('ERR', err);
     })
-
   };
-
-
 })
-
-
 
 .controller('ProfileCtrl', function ($scope, ngFB) {
   ngFB.api({
