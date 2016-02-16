@@ -63,8 +63,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     controller: 'ForgotPasswordCtrl'
   })
 
-
-
   // setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',

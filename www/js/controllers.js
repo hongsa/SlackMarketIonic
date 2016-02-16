@@ -1,5 +1,5 @@
-// var baseurl = "http://slack.jikbakguri.com"
-var baseurl = "http://127.0.0.1:8000"
+var baseurl = "http://slack.jikbakguri.com"
+// var baseurl = "http://127.0.0.1:8000"
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $ionicLoading) {
@@ -131,46 +131,27 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 // slack 부분 시작
 
-.controller('SlackCtrl', function($scope,$http) {
+.controller('SlackCtrl', function($scope, $http, SlackList) {
 
-  $http.get(baseurl + '/lists/0/').then(function(resp) {
-    $scope.slacks ={};
-    console.log('Success',resp);
-    $scope.slacks = resp;
-  },
-  function(err) {
-    console.error('ERR', err);
-  })
+  $scope.slacks = [];
 
-  // $scope.doRefresh = function(){
+  SlackList.List().then(function(slacks){
+    $scope.slacks = slacks;
+  });
 
-  //   $http.get(baseurl + '/slacks/').then(function(resp) {
-  //     $scope.slacks ={};
+  $scope.loadMore = function() {
+    SlackList.ListMore().then(function(slacks){
 
-  //     console.log('Success',resp);
-  //     $scope.slacks = resp;
-  //   },
-  //   function(err) {
-  //     console.error('ERR', err);
-  //   })
-  // }
+      $scope.slacks = $scope.slacks.concat(slacks);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    });
+  };
 
-  // $scope.loadMore = function() {
-  //   $http.get(baseurl + '/slacks/').then(function(resp) {
-  //     $scope.slacks ={};
-
-  //     console.log('Success',resp);
-  //     $scope.slacks = resp;
-  //   },
-  //   function(err) {
-  //     console.error('ERR', err);
-  //   })
-  // };
-
-  // $scope.$on('$stateChangeSuccess', function() {
-  //   $scope.loadMore();
-  // });
-
+  $scope.doRefresh = function() {
+    SlackList.List().then(function(slacks){
+      $scope.slacks = slacks;
+    });
+  };
 
 })
 
@@ -189,9 +170,9 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 })
 
 .controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window) {
-  $scope.slackId = $stateParams.slackId;
+  var slackId = $stateParams.slackId;
 
-  $http.get(baseurl + '/slacks/'+$scope.slackId+'/').then(function(resp) {
+  $http.get(baseurl + '/slacks/'+ slackId +'/').then(function(resp) {
     $scope.slack ={};
     console.log('Success',resp);
     $scope.slack = resp;
@@ -202,9 +183,9 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
   $scope.register = function(text){
 
-    $scope.user_register = {'slack_id': $scope.slack.data[0].id, 'user_id' : $window.localStorage.userid, 'description':text.description}
-    console.log($scope.user_register)
-    $http.post(baseurl + '/register/', $scope.user_register).then(function(resp) {
+    var user_register = {'slack_id': $scope.slack.data[0].id, 'user_id' : $window.localStorage.userid, 'description':text.description}
+    console.log(user_register)
+    $http.post(baseurl + '/register/', user_register).then(function(resp) {
 
       console.log('Success',resp);
       console.log(resp)
@@ -221,8 +202,8 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 .controller('MyRegistersCtrl', function($scope, $http, $window) {
 
-  $scope.user_id = $window.localStorage.userid
-  $http.post(baseurl + '/myregisters/', $scope.user_id).then(function(resp) {
+  var user_id = $window.localStorage.userid
+  $http.post(baseurl + '/myregisters/', user_id).then(function(resp) {
     $scope.myRegisters ={};
     console.log('Success',resp);
     $scope.myRegisters = resp;
@@ -246,15 +227,15 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     }
   }
 })
-.controller('MyRegistersDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('MyRegistersDetailCtrl', function($scope, $stateParams) {
 })
 
 
 
 .controller('MySlacksCtrl', function($scope, $http, $window) {
 
-  $scope.user_id = $window.localStorage.userid
-  $http.post(baseurl + '/myslacks/', $scope.user_id).then(function(resp) {
+  var user_id = $window.localStorage.userid
+  $http.post(baseurl + '/myslacks/', user_id).then(function(resp) {
     $scope.mySlacks ={};
     console.log('Success',resp);
     $scope.mySlacks = resp;
@@ -265,8 +246,8 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 })
 
 .controller('MySlacksDetailCtrl', function($scope, $stateParams, $http) {
-  $scope.slackId = $stateParams.slackId;
-  $http.get(baseurl + '/myslacks/' + $scope.slackId + '/').then(function(resp) {
+  var slackId = $stateParams.slackId;
+  $http.get(baseurl + '/myslacks/' + slackId + '/').then(function(resp) {
     $scope.mySlacksRegister ={};
     console.log('Success',resp);
     $scope.mySlacksRegister = resp;
@@ -276,9 +257,9 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   })
 
   $scope.check = function(num,id){
-    $scope.information = {'register_id' : id, 'num' : num}
+    var information = {'register_id' : id, 'num' : num};
     console.log($scope.information)
-    $http.post(baseurl + '/myslacks/' + $scope.slackId + '/', $scope.information).then(function(resp) {
+    $http.post(baseurl + '/myslacks/' + slackId + '/', information).then(function(resp) {
       console.log('Success',resp);
       if(resp.data == 1){
         alert('초대 수락되었습니다.');
