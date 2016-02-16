@@ -1,0 +1,24 @@
+<ion-view view-title="내 슬랙">
+<ion-content class="padding">
+
+<ion-list ng-controller="MySlacksCtrl" >
+
+<ion-item class="list card" href="#/tab/mySlacks/{{item.id}}" ng-repeat="item in mySlacks.data">
+<div class="item">
+	<h2>{{item.name}}</h2>
+</div>
+<div class="item item-body">
+	<p>
+		{{item.description}}
+	</p>
+	<p>
+		{{item.type | slackType}} / {{item.created | date:'MM-dd'}}
+	</p>
+</div>
+
+</ion-item>
+
+</ion-list>
+</ion-content>
+
+</ion-view>

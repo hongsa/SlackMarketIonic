@@ -1,0 +1,24 @@
+<ion-view view-title="내 신청목록">
+<ion-content class="padding">
+
+<ion-list ng-controller="MyRegistersCtrl" >
+
+<ion-item class="list card" href="#/tab/myRegisters/{{item.id}}" ng-repeat="item in myRegisters.data">
+<div class="item">
+	<h2>{{item.slack_name}}</h2>
+</div>
+<div class="item item-body">
+	<p>
+		{{item.description}}
+	</p>
+	<p>
+		{{item.type | registerType}} / {{item.created | date:'MM-dd'}}
+	</p>
+</div>
+
+</ion-item>
+
+</ion-list>
+</ion-content>
+
+</ion-view>

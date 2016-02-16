@@ -1,0 +1,34 @@
+<ion-view view-title="">
+<ion-content class="padding">
+
+<ion-list ng-controller="MySlacksDetailCtrl" >
+
+<ion-item class="card list" ng-repeat="item in mySlacksRegister.data">
+<div class="item">
+	<h2>
+		{{item.slack_name}}
+	</h2>
+</div>
+<div class="item item-body">
+	<p>
+		{{item.description}}
+	</p>
+	<p>
+		{{item.type | registerType}} / {{item.created | date:'MM-dd'}}
+	</p>
+	<p class="row">
+		<span class="col col-50">
+		<button class="button button-positive button-block" ng-click="check(1,item.id)">승인</button>
+		</span>
+		<span class="col col-50">
+		<button class="button button-assertive button-block" ng-click="check(2,item.id)">거절</button>
+		</span>
+	</p>
+</div>
+</ion-item>
+<!-- </div> -->
+
+</ion-list>
+</ion-content>
+
+</ion-view>

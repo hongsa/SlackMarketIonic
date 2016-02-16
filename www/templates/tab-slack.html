@@ -1,0 +1,30 @@
+<ion-view view-title="슬랙마켓">
+<ion-content class="padding">
+
+<ion-list ng-controller="SlackCtrl" >
+
+<ion-item class="list card" ng-repeat="item in slacks.data" href="#/tab/slack/{{item.id}}" >
+
+<div class="item">
+	<h2>{{item.name}}</h2>
+	<p>{{item.category}}</p>
+</div>
+
+<div class="item item-body">
+	<p>
+		{{item.description}}
+	</p>
+	<p>
+		<p>{{item.type | slackType}} / {{item.user_username}} 님</p>
+	</p>
+</div>
+
+</ion-item>
+
+
+
+
+</ion-list>
+</ion-content>
+
+</ion-view>

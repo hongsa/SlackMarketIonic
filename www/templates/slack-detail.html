@@ -1,0 +1,37 @@
+<ion-view view-title="{{slack.data.name}}">
+<ion-content class="padding">
+
+<ion-list ng-controller="SlackDetailCtrl" >
+
+<ion-item class="list card">
+<div class="item">
+	<h2>{{slack.data.name}}</h2>
+	<p>{{slack.data.category}} / {{slack.data.created | date:'MM-dd'}}</p>
+</div>
+<div class="item item-body">
+	<p>
+		{{slack.data.description}}
+	</p>
+	<p>
+		<p>url : {{slack.data.url}}<br>
+			{{slack.data.type | slackType}} / {{slack.data.user_username}} 님</p>
+		</p>
+	</div>
+
+</ion-item>
+</ion-list>
+
+<div class="list">
+	<form name="register_form" class="" novalidate ng-submit="register(text)">
+		<label class="item item-input">
+			<input type="text" placeholder="가입 신청서를 작성해주세요." name="description" ng-model="text.description" required>
+		</label>
+		<button type="submit" class="button button-positive button-block" ng-disabled="register_form.$invalid">
+			신청하기
+		</button>
+	</form>
+</div>
+
+</ion-content>
+
+</ion-view>
