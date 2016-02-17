@@ -1,31 +1,55 @@
-// var baseurl = "http://slack.jikbakguri.com"
-var baseurl = "http://127.0.0.1:8000"
+var baseurl = "http://slack.jikbakguri.com";
+// var baseurl = "http://127.0.0.1:8000";
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
-.controller('AuthCtrl', function($scope, $state, ngFB, $http, $ionicLoading) {
+.controller('AuthCtrl', function($scope, $state, ngFB, $http, $q, $window) {
 
   $scope.fbLogin = function () {
     ngFB.login({scope: 'email,public_profile,publish_actions'}).then(
       function (response) {
         if (response.status === 'connected') {
+          console.log(response.authResponse.accessToken)
           console.log('Facebook login succeeded');
-        } else {
+          $scope.goServer();
+        } 
+        else {
+          $window.alert('33')
           alert('Facebook login failed');
         }
-      });
+      })
+  }
+
+  $scope.goServer = function(){
+    console.log("ssssssss")
 
     //저장할 회원 값 가져오기
+    var user = {};
     ngFB.api({
       path: '/me',
       params: {fields: 'id,name,email,gender,updated_time,locale'}
     }).then(
-    function (user) {
-      $scope.user = user;
+    function (resp) {
+      angular.extend(user,resp)
+      var deferred = $q.defer();
 
     // ajax 시작
-    $http.post(baseurl +'/facebook/',user).then(function(resp) {
+    $http.post(baseurl +'/facebook/', user).then(function(resp) {
       console.log(resp)
-      $state.go('tab.slack');
+
+      var token = resp.data.token;
+      var username = resp.data.username;
+      var userid = resp.data.id;
+
+      if (token && username) {
+        $window.localStorage.token = token;
+        $window.localStorage.username = username;
+        $window.localStorage.userid = userid;
+        deferred.resolve(true);
+        $state.go('tab.slack');
+      } else {
+        deferred.reject('Invalid data received from server');
+      }
+
     },
     function(err) {
       console.error('ERR', err);
@@ -36,7 +60,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   function (error) {
     alert('Facebook error: ' + error.error_description);
   });
-  };
+  }
 
 })
 
@@ -118,7 +142,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 // slack 부분 시작
 
-.controller('SlackCtrl', function($scope, $http, SlackList, $timeout, $ionicLoading) {
+.controller('SlackCtrl', function($scope, $http, SlackList) {
 
   $scope.slacks = [];
   $scope.noMoreItemsAvailable =false;

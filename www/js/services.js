@@ -24,8 +24,8 @@ angular.module('starter.services', [])
 })
 
 .factory('SlackList', function($http){
-  var BASE_URL = "http://127.0.0.1:8000";
-  // var BASE_URL = "http://slack.jikbakguri.com";
+  // var BASE_URL = "http://127.0.0.1:8000";
+  var BASE_URL = "http://slack.jikbakguri.com";
   var slacks = [];
 
   return {

@@ -5,10 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngOpenFB','ngCookies'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngOpenFB','ngStorage'])
 
-.run(function($ionicPlatform, ngFB, $http, $cookies) {
-  ngFB.init({appId: '1668219540123468'});
+.run(function($ionicPlatform, ngFB, $http, $window) {
+  ngFB.init({appId: '1668219540123468', tokenStore: $window.localStorage, accessToken : $window.localStorage.fbAccessToken});
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -29,8 +29,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
   $httpProvider.interceptors.push('AuthInterceptor');
-
-
   $stateProvider
 
   .state('auth', {
