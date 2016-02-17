@@ -3,6 +3,9 @@ var baseurl = "http://slack.jikbakguri.com";
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $q, $window) {
+  if($window.localStorage.token){
+    $state.go('tab.slack');
+  }
 
   $scope.fbLogin = function () {
     ngFB.login({scope: 'email,public_profile,publish_actions'}).then(
