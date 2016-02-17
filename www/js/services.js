@@ -27,17 +27,10 @@ angular.module('starter.services', [])
   var BASE_URL = "http://127.0.0.1:8000";
   // var BASE_URL = "http://slack.jikbakguri.com";
   var slacks = [];
-  var num = 0;
 
   return {
-    List: function(){
-      return $http.get(BASE_URL+'/lists/'+ num +'/').then(function(resp){
-        slacks = resp.data;
-        return slacks;
-      });
-    },
-    ListMore: function(){
-      num += 1
+
+    ListMore: function(num){
       return $http.get(BASE_URL+'/lists/'+ num +'/').then(function(resp){
         slacks = resp.data;
         return slacks;

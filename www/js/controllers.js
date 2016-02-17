@@ -122,28 +122,26 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
   $scope.slacks = [];
   $scope.noMoreItemsAvailable =false;
-
-  SlackList.List().then(function(slacks){
-    $scope.slacks = slacks;
-  });
+  var num = 0;
 
   $scope.loadMore = function() {
-    SlackList.ListMore().then(function(slacks){
+    SlackList.ListMore(num).then(function(slacks){
       if(slacks === 404){
-        $scope.noMoreItemsAvailable =true;
+        $scope.noMoreItemsAvailable = true;
       }
       else{
+        num += 1
         $scope.slacks = $scope.slacks.concat(slacks);
         $scope.$broadcast('scroll.infiniteScrollComplete');
       }
-
     });
   };
 
   $scope.doRefresh = function() {
-    SlackList.List().then(function(slacks){
+    num = 0
+    $scope.noMoreItemsAvailable = false;
+    SlackList.ListMore(num).then(function(slacks){
       $scope.slacks = slacks;
-      console.log($scope.slacks);
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
