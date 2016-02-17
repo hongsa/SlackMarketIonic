@@ -1,5 +1,5 @@
-var baseurl = "http://slack.jikbakguri.com";
-// var baseurl = "http://127.0.0.1:8000";
+// var baseurl = "http://slack.jikbakguri.com";
+var baseurl = "http://127.0.0.1:8000";
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $q, $window) {
@@ -168,6 +168,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     num = 0
     $scope.noMoreItemsAvailable = false;
     SlackList.ListMore(num).then(function(slacks){
+      num += 1
       $scope.slacks = slacks;
       $scope.$broadcast('scroll.refreshComplete');
     });
@@ -220,17 +221,35 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   }
 })
 
-.controller('MyRegistersCtrl', function($scope, $http, $window) {
+.controller('MyRegistersCtrl', function($scope, $http, $window, myRegisterList) {
 
-  var user_id = $window.localStorage.userid
-  $http.post(baseurl + '/myregisters/', user_id).then(function(resp) {
-    $scope.myRegisters ={};
-    console.log('Success',resp);
-    $scope.myRegisters = resp;
-  },
-  function(err) {
-    console.error('ERR', err);
-  })
+  $scope.myRegisters = [];
+  $scope.noMoreItemsAvailable =false;
+  var num = 0;
+
+  $scope.loadMore = function() {
+    myRegisterList.ListMore(num).then(function(myRegisters){
+      if(myRegisters === 404){
+        $scope.noMoreItemsAvailable = true;
+      }
+      else{
+        num += 1
+        $scope.myRegisters = $scope.myRegisters.concat(myRegisters);
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      }
+    });
+  };
+
+  $scope.doRefresh = function() {
+    num = 0
+    $scope.noMoreItemsAvailable = false;
+    myRegisterList.ListMore(num).then(function(myRegisters){
+      num += 1
+      $scope.myRegisters = myRegisters;
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+  };
+
 
 })
 
@@ -252,17 +271,37 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 
 
-.controller('MySlacksCtrl', function($scope, $http, $window) {
+.controller('MySlacksCtrl', function($scope, $http, $window, mySlackList) {
 
-  var user_id = $window.localStorage.userid
-  $http.post(baseurl + '/myslacks/', user_id).then(function(resp) {
-    $scope.mySlacks ={};
-    console.log('Success',resp);
-    $scope.mySlacks = resp;
-  },
-  function(err) {
-    console.error('ERR', err);
-  })
+ $scope.mySlacks = [];
+ $scope.noMoreItemsAvailable =false;
+ var num = 0;
+
+ $scope.loadMore = function() {
+  mySlackList.ListMore(num).then(function(mySlacks){
+    if(mySlacks === 404){
+      $scope.noMoreItemsAvailable = true;
+    }
+    else{
+      num += 1
+      $scope.mySlacks = $scope.mySlacks.concat(mySlacks);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    }
+  });
+};
+
+$scope.doRefresh = function() {
+  num = 0
+  $scope.noMoreItemsAvailable = false;
+  mySlackList.ListMore(num).then(function(mySlacks){
+    num += 1
+    $scope.mySlacks = mySlacks;
+    $scope.$broadcast('scroll.refreshComplete');
+  });
+};
+
+
+
 })
 
 .controller('MySlacksDetailCtrl', function($scope, $stateParams, $http) {

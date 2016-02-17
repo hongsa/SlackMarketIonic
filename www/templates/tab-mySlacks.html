@@ -1,9 +1,12 @@
 <ion-view view-title="내 슬랙">
-<ion-content class="padding">
+<ion-content class="padding" ng-controller="MySlacksCtrl" >
 
-<ion-list ng-controller="MySlacksCtrl" >
+<ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+</ion-refresher>
 
-<ion-item class="list card" href="#/tab/mySlacks/{{item.id}}" ng-repeat="item in mySlacks.data">
+<ion-list>
+
+<ion-item class="list card" href="#/tab/mySlacks/{{item.id}}" ng-repeat="item in mySlacks">
 <div class="item">
 	<h2>{{item.name}}</h2>
 </div>
@@ -19,6 +22,10 @@
 </ion-item>
 
 </ion-list>
+
+<ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>
+
+
 </ion-content>
 
 </ion-view>

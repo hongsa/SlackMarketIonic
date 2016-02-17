@@ -24,8 +24,8 @@ angular.module('starter.services', [])
 })
 
 .factory('SlackList', function($http){
-  // var BASE_URL = "http://127.0.0.1:8000";
-  var BASE_URL = "http://slack.jikbakguri.com";
+  var BASE_URL = "http://127.0.0.1:8000";
+  // var BASE_URL = "http://slack.jikbakguri.com";
   var slacks = [];
 
   return {
@@ -43,4 +43,58 @@ angular.module('starter.services', [])
     }
   }
 })
+
+.factory('myRegisterList', function($http, $window){
+  var BASE_URL = "http://127.0.0.1:8000";
+  // var BASE_URL = "http://slack.jikbakguri.com";
+  var myRegisters = [];
+
+  return {
+
+    ListMore: function(num){
+      var user_id = $window.localStorage.userid;
+      console.log(user_id)
+      return $http.post(BASE_URL+'/myregisters/'+ num +'/', user_id).then(function(resp){
+        console.log(resp);
+        myRegisters = resp.data;
+        return myRegisters;
+      },
+      function(err) {
+        myRegisters = err.status
+        return myRegisters
+      })
+
+    }
+  }
+})
+
+.factory('mySlackList', function($http, $window){
+  var BASE_URL = "http://127.0.0.1:8000";
+  // var BASE_URL = "http://slack.jikbakguri.com";
+  var mySlacks = [];
+
+  return {
+
+    ListMore: function(num){
+      var user_id = $window.localStorage.userid;
+      console.log(user_id)
+      return $http.post(BASE_URL+'/myslackslist/'+ num +'/', user_id).then(function(resp){
+        console.log(resp);
+        mySlacks = resp.data;
+        return mySlacks;
+      },
+      function(err) {
+        mySlacks = err.status
+        return mySlacks
+      })
+
+    }
+  }
+})
+
+
+
+
+
+
 
