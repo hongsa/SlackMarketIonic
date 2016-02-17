@@ -1,5 +1,5 @@
-var baseurl = "http://slack.jikbakguri.com"
-// var baseurl = "http://127.0.0.1:8000"
+// var baseurl = "http://slack.jikbakguri.com"
+var baseurl = "http://127.0.0.1:8000"
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $ionicLoading) {
@@ -64,19 +64,6 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       } else {
         deferred.reject('Invalid data received from server');
       }
-
-      // $cookies.put('user_id', resp.data.id)
-      // $cookies.put('user_email', resp.data.email)
-
-      // $cookies.put('sessionId', resp.headers['Set-Cookie']);
-      
-
-      // $cookies.userName = 'Sandeep';
-      // $cookieStore.put('flower', 'Rose');
-
-      // $localStorage.LocalMessage = resp.data
-      // $sessionStorage.SessionMessage = resp.data
-
     },
     function(err) {
       console.error('ERR', err);
@@ -131,9 +118,10 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 // slack 부분 시작
 
-.controller('SlackCtrl', function($scope, $http, SlackList) {
+.controller('SlackCtrl', function($scope, $http, SlackList, $timeout, $ionicLoading) {
 
   $scope.slacks = [];
+  $scope.noMoreItemsAvailable =false;
 
   SlackList.List().then(function(slacks){
     $scope.slacks = slacks;
@@ -141,15 +129,22 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
   $scope.loadMore = function() {
     SlackList.ListMore().then(function(slacks){
+      if(slacks === 404){
+        $scope.noMoreItemsAvailable =true;
+      }
+      else{
+        $scope.slacks = $scope.slacks.concat(slacks);
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      }
 
-      $scope.slacks = $scope.slacks.concat(slacks);
-      $scope.$broadcast('scroll.infiniteScrollComplete');
     });
   };
 
   $scope.doRefresh = function() {
     SlackList.List().then(function(slacks){
       $scope.slacks = slacks;
+      console.log($scope.slacks);
+      $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
