@@ -129,12 +129,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }
   })
 
-  .state('tab.hello', {
-    url: '/hello',
+  .state('tab.settings', {
+    url: '/settings',
     views: {
-      'tab-hello': {
-        templateUrl: 'templates/tab-hello.html',
-        controller: 'ProfileCtrl'
+      'tab-settings': {
+        templateUrl: 'templates/tab-settings.html',
+        controller: 'SettingsCtrl'
       }
     }
   })

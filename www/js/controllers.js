@@ -23,8 +23,6 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   }
 
   $scope.goServer = function(){
-    console.log("ssssssss")
-
     //저장할 회원 값 가져오기
     var user = {};
     ngFB.api({
@@ -204,7 +202,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
   $scope.register = function(text){
 
-    var user_register = {'slack_id': $scope.slack.data[0].id, 'user_id' : $window.localStorage.userid, 'description':text.description}
+    var user_register = {'slack_id': $scope.slack.data[0].id, 'user_id' : $window.localStorage.userid, 'description':text.description};
     console.log(user_register)
     $http.post(baseurl + '/register/', user_register).then(function(resp) {
 
@@ -301,7 +299,6 @@ $scope.doRefresh = function() {
 };
 
 
-
 })
 
 .controller('MySlacksDetailCtrl', function($scope, $stateParams, $http) {
@@ -332,20 +329,36 @@ $scope.doRefresh = function() {
       console.error('ERR', err);
     })
   };
+
 })
 
-.controller('ProfileCtrl', function ($scope, ngFB) {
-  ngFB.api({
-    path: '/me',
-    params: {fields: 'id,name,email,gender,updated_time,locale'}
-  }).then(
-  function (user) {
-    console.log(user)
-    $scope.user = user;
-  },
-  function (error) {
-    alert('Facebook error: ' + error.error_description);
-  });
+
+.controller('SettingsCtrl', function($scope, $window, $state, $http) {
+
+  $scope.register = function(slack){
+    $scope.slack = slack
+    $scope.slack.user_id = $window.localStorage.userid;
+    console.log(slack)
+
+    $http.post(baseurl + '/slregister/', slack).then(function(resp) {
+
+      console.log('Success',resp);
+      console.log(resp)
+      alert('등록 완료되었습니다.');
+    },
+    function(err) {
+      console.error('ERR', err);
+      alert('등록 실패되었습니다.');
+    })
+  }
+
+  $scope.logout = function () {
+    $window.localStorage.removeItem('token');
+    $window.localStorage.removeItem('username');
+    $window.localStorage.removeItem('userid');
+    $window.localStorage.removeItem('fbAccessToken');
+    $state.go('auth.walkthrough');
+  }
 
 
 });
