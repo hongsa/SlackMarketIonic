@@ -92,7 +92,29 @@ angular.module('starter.services', [])
   }
 })
 
+.factory('sendInvite', function($http, $window){
+  var BASE_URL = "http://127.0.0.1:8000";
+  // var BASE_URL = "http://slack.jikbakguri.com";
 
+  return {
+
+    SendInvite: function(slackid){
+      var user_id = $window.localStorage.userid;
+      var data ={'user_id' : user_id, 'slack_id' : slackid}
+      console.log(data)
+      return $http.post(BASE_URL+'/invite/', data).then(function(resp){
+        console.log(resp);
+        alert("초대장이 발송되었습니다.")
+        return true;
+      },
+      function(err) {
+        alert("발송 실패, 다시 확인해주세요.")
+        return false
+      })
+
+    }
+  }
+})
 
 
 

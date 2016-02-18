@@ -16,7 +16,6 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
           $scope.goServer();
         } 
         else {
-          $window.alert('33')
           alert('Facebook login failed');
         }
       })
@@ -176,10 +175,10 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 .filter("slackType",function(){
   return function(value){
-    if (value == 0){
+    if (value === 0){
       return "공개 초대"
     }
-    else if(value == 1){
+    else if(value === 1){
       return "승인 초대"
     }
     else{
@@ -188,7 +187,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   }
 })
 
-.controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window) {
+.controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window, sendInvite) {
   var slackId = $stateParams.slackId;
 
   $http.get(baseurl + '/slacks/'+ slackId +'/').then(function(resp) {
@@ -206,9 +205,13 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     console.log(user_register)
     $http.post(baseurl + '/register/', user_register).then(function(resp) {
 
-      console.log('Success',resp);
       console.log(resp)
       alert('신청 완료되었습니다.');
+      if($scope.slack.data[0].type === 0){
+        sendInvite.SendInvite($scope.slack.data[0].id);
+      }
+
+
     },
     function(err) {
       console.error('ERR', err);
@@ -298,10 +301,9 @@ $scope.doRefresh = function() {
   });
 };
 
-
 })
 
-.controller('MySlacksDetailCtrl', function($scope, $stateParams, $http) {
+.controller('MySlacksDetailCtrl', function($scope, $stateParams, $http, sendInvite) {
   var slackId = $stateParams.slackId;
   $http.get(baseurl + '/myslacks/' + slackId + '/').then(function(resp) {
     $scope.mySlacksRegister ={};
@@ -318,12 +320,12 @@ $scope.doRefresh = function() {
     $http.post(baseurl + '/myslacks/' + slackId + '/', information).then(function(resp) {
       console.log('Success',resp);
       if(resp.data == 1){
-        alert('초대 수락되었습니다.');
+        console.log("gogo")
+        sendInvite.SendInvite(slackId)
       }
       else{
         alert('초대 거절되었습니다.');
       }
-
     },
     function(err) {
       console.error('ERR', err);

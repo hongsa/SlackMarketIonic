@@ -1,34 +1,40 @@
-<ion-view view-title="설정">
+<ion-view view-title="슬랙 등록">
 <ion-content class="has-header" ng-controller="SettingsCtrl">
 
 <ion-list>
-
 <form name="slack_register_form" class="" novalidate ng-submit="register(newSlack)">
 	<div class="list">
 		<label class="item item-input">
-			<input type="text" placeholder="Name" name="name" ng-model="newSlack.name" required>
+			<input type="text" placeholder="슬랙 이름 " name="name" ng-model="newSlack.name" required>
 		</label>
 		<label class="item item-input">
-			<input type="text" placeholder="URL" name="url" ng-model="newSlack.url" required>
+			<input type="text" placeholder="URL(example.slack.com)" name="url" ng-model="newSlack.url" required>
 		</label>
-
-		<label class="item item-input">
-			<input type="text" placeholder="Token" name="token" ng-model="newSlack.token" >
-		</label>
+		
+		<div class="row responsive-sm">
+			<label class="item item-input">
+				<input type="text" placeholder="Token : 하단버튼에서 확인(슬랙 관리자만 가능)" name="token" ng-model="newSlack.token" >
+			</label>
+			<button class="button button-positive">
+				<a href="https://api.slack.com/web#auth" target="_blank" style="text-decoration:none">
+					<span style="color:white">Token 확인하러 가기</span>
+				</a>
+			</button>
+		</div>
 
 		<label class="item item-input" show-hide-container>
-			<textarea rows="3" cols="5" placeholder="Description" name="description" ng-model="newSlack.description">
+			<textarea rows="3" cols="5" placeholder="슬랙을 상세하게 소개해주세요." name="description" ng-model="newSlack.description">
 			</textarea>
 		</label>
 
 		<label class="item item-input item-select">
 			<div class="input-label">
-				Type
+				초대유형
 			</div>
 			<select ng-model="newSlack.type" ng-init="newSlack.type='0'">
-				<option value="0">Public</option>
-				<option value="1">Private</option>
-				<option value="2">Impossible</option>
+				<option value="0">공개초대</option>
+				<option value="1">승인초대</option>
+				<option value="2">초대불가</option>
 			</select>
 		</label>
 
@@ -36,26 +42,25 @@
 			<div class="input-label">
 				Category
 			</div>
-			<select ng-model="newSlack.category" ng-init="newSlack.category='Tech'">
-				<option value="Tech" selected>Tech</option>
-				<option value="Culture">Culture</option>
-				<option value="ETC">ETC</option>
-			</select>
-		</label>
+			<select ng-model="newSlack.category" ng-init="newSlack.category='IT'">
+				<option value="IT" selected>IT</option>
+				<option value="문화">문화</option>
+				<option value="콘텐츠">콘텐츠츠/option>
+					<option value="기타">기타</option>
+				</select>
+			</label>
+		</div>
+
+		<button type="submit" class="button button-assertive button-block" ng-disabled="slack_register_form.$invalid">
+			Register
+		</button>
+	</form>
+
+	<div class="text-center">
+		<button class="button button-positive" ng-click="logout()">
+			Logout
+		</button>
 	</div>
-
-	<button type="submit" class="button button-assertive button-block" ng-disabled="slack_register_form.$invalid">
-		Register
-	</button>
-</form>
-
-
-<div class="text-center">
-	
-	<button class="button button-positive" ng-click="logout()">
-		Logout
-	</button>
-</div>
 </ion-list>
 
 </ion-content>
