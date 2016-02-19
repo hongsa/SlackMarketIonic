@@ -1,5 +1,5 @@
-// var baseurl = "http://slack.jikbakguri.com";
-var baseurl = "http://127.0.0.1:8000";
+var baseurl = "http://slack.jikbakguri.com";
+// var baseurl = "http://127.0.0.1:8000";
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $q, $window) {
@@ -211,13 +211,11 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
         sendInvite.SendInvite($scope.slack.data[0].id);
       }
 
-
     },
     function(err) {
       console.error('ERR', err);
       alert('이미 신청했습니다.');
     })
-
 
   }
 })
