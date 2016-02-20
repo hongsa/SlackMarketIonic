@@ -12,10 +12,10 @@ angular.module('starter.services', [])
 
     responseError: function (response) {
       if (response.status === 401) {
-        // $window.localStorage.removeItem('token');
-        // $window.localStorage.removeItem('username');
-        // $window.localStorage.removeItem('userid');
-        // $location.path('/');
+        $window.localStorage.removeItem('token');
+        $window.localStorage.removeItem('username');
+        $window.localStorage.removeItem('userid');
+        $location.path('/');
         return;
       }
       return $q.reject(response);

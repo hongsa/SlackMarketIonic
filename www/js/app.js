@@ -143,4 +143,4 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     // $urlRouterProvider.otherwise('/tab/slack');
     $urlRouterProvider.otherwise('/auth/walkthrough');
 
-});
+  });
