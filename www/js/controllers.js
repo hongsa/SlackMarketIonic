@@ -90,7 +90,15 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       }
     },
     function(err) {
-      console.error('ERR', err);
+      if(err.status === 403){
+        alert('Password Error!')
+      }
+      else if(err.status === 404){
+        alert('Email is not found!')
+      }
+      else{
+        alert('Facebook Login Please!')
+      }
     })
 
   };
@@ -125,6 +133,19 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     },
     function(err) {
       console.error('ERR', err);
+
+      if(err.data === 'email'){
+        alert('Email overlapped!')
+      }
+      else if(err.data === 'username'){
+        alert('Username overlapped!')
+      }
+      else{
+        alert('Error!')
+      }
+
+
+
     })
   };
 
@@ -176,13 +197,13 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 .filter("slackType",function(){
   return function(value){
     if (value === 0){
-      return "공개 초대"
+      return "Public invite"
     }
     else if(value === 1){
-      return "승인 초대"
+      return "Private invite"
     }
     else{
-      return "초대 불가"
+      return "invite impossible"
     }
   }
 })
@@ -206,15 +227,16 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     $http.post(baseurl + '/register/', user_register).then(function(resp) {
 
       console.log(resp)
-      alert('신청 완료되었습니다.');
+      alert('Register Success!');
       if($scope.slack.data[0].type === 0){
         sendInvite.SendInvite($scope.slack.data[0].id);
+        alert('Invitating email has been sent. Please check your email.');
       }
 
     },
     function(err) {
       console.error('ERR', err);
-      alert('이미 신청했습니다.');
+      alert('Already registered!');
     })
 
   }
@@ -255,13 +277,13 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 .filter("registerType",function(){
   return function(value){
     if (value == 0){
-      return "대기중"
+      return "Waiting"
     }
     else if(value == 1){
-      return "초대완료"
+      return "Invite success"
     }
     else{
-      return "초대거절"
+      return "Invite refusal"
     }
   }
 })
@@ -322,7 +344,7 @@ $scope.doRefresh = function() {
         sendInvite.SendInvite(slackId)
       }
       else{
-        alert('초대 거절되었습니다.');
+        alert('Refuse success!');
       }
     },
     function(err) {
@@ -335,6 +357,20 @@ $scope.doRefresh = function() {
 
 .controller('SettingsCtrl', function($scope, $window, $state, $http) {
 
+  $scope.logout = function () {
+    $window.localStorage.removeItem('token');
+    $window.localStorage.removeItem('username');
+    $window.localStorage.removeItem('userid');
+    $window.localStorage.removeItem('fbAccessToken');
+    $state.go('auth.walkthrough');
+  }
+
+
+})
+
+
+.controller('AddSlackCtrl', function($scope, $window, $state, $http) {
+
   $scope.register = function(slack){
     $scope.slack = slack
     $scope.slack.user_id = $window.localStorage.userid;
@@ -344,21 +380,12 @@ $scope.doRefresh = function() {
 
       console.log('Success',resp);
       console.log(resp)
-      alert('등록 완료되었습니다.');
+      alert('Slack upload success!');
     },
     function(err) {
       console.error('ERR', err);
-      alert('등록 실패되었습니다.');
+      alert('Fail!');
     })
   }
-
-  $scope.logout = function () {
-    $window.localStorage.removeItem('token');
-    $window.localStorage.removeItem('username');
-    $window.localStorage.removeItem('userid');
-    $window.localStorage.removeItem('fbAccessToken');
-    $state.go('auth.walkthrough');
-  }
-
 
 });

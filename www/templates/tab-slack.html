@@ -1,4 +1,4 @@
-<ion-view view-title="슬랙마켓">
+<ion-view view-title="Slack lists">
 <ion-content class="padding" ng-controller="SlackCtrl">
 
 	<ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
@@ -24,5 +24,4 @@
 	<ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>
 
 </ion-content>
-
 </ion-view>

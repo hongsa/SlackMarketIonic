@@ -139,6 +139,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }
   })
 
+  .state('tab.addSlack', {
+    url: '/addSlack',
+    views: {
+      'tab-addSlack': {
+        templateUrl: 'templates/tab-addSlack.html',
+        controller: 'AddSlackCtrl'
+      }
+    }
+  })
+
+
   // if none of the above states are matched, use this as the fallback
     // $urlRouterProvider.otherwise('/tab/slack');
     $urlRouterProvider.otherwise('/auth/walkthrough');

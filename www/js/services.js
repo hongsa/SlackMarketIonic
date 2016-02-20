@@ -104,11 +104,11 @@ angular.module('starter.services', [])
       console.log(data)
       return $http.post(BASE_URL+'/invite/', data).then(function(resp){
         console.log(resp);
-        alert("초대장이 발송되었습니다.")
+        alert("Invitation has been sent.")
         return true;
       },
       function(err) {
-        alert("발송 실패, 다시 확인해주세요.")
+        alert("Sending fails, please check again.")
         return false
       })
 
