@@ -1,11 +1,20 @@
 <ion-view view-title="Slack lists">
 <ion-content class="padding" ng-controller="SlackCtrl">
 
+<ion-header-bar class="bar-positive">
+<a href="#">
+	<h1 class="title" ui-sref="addSlack">Add Slack</h1>
+</a>
+</ion-header-bar>
+<br>
+<br>
+
 <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
 </ion-refresher>
-<button class="button button-balanced button-block" ui-sref="addSlack">
-	Add Slack
-</button>
+
+<!-- <button class="button button-balanced button-block" ui-sref="addSlack"> -->
+<!-- Add Slack -->
+<!-- </button> -->
 
 <ion-list>
 <ion-item class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}" >
