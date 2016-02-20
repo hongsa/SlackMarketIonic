@@ -139,14 +139,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }
   })
 
-  .state('tab.addSlack', {
+  .state('addSlack', {
     url: '/addSlack',
-    views: {
-      'tab-addSlack': {
-        templateUrl: 'templates/tab-addSlack.html',
-        controller: 'AddSlackCtrl'
-      }
-    }
+    templateUrl: 'templates/addSlack.html',
+    controller: 'AddSlackCtrl'
   })
 
 

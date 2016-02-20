@@ -381,6 +381,7 @@ $scope.doRefresh = function() {
       console.log('Success',resp);
       console.log(resp)
       alert('Slack upload success!');
+      $state.go('tab.slack');
     },
     function(err) {
       console.error('ERR', err);

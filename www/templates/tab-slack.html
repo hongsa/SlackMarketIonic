@@ -1,27 +1,30 @@
 <ion-view view-title="Slack lists">
 <ion-content class="padding" ng-controller="SlackCtrl">
 
-	<ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
-	</ion-refresher>
+<ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+</ion-refresher>
+<button class="button button-balanced button-block" ui-sref="addSlack">
+	Add Slack
+</button>
 
-	<ion-list>
-		<ion-item class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}" >
-			<div class="item">
-			<h2>{{item.name}}</h2>
-			<p>{{item.category}}</p>
-			</div>
-			<div class="item item-body">
-				<p>
-					{{item.description}}
-				</p>
-				<p>
-					<p>{{item.type | slackType}} / {{item.user_username}} 님</p>
-				</p>
-			</div>
-		</ion-item>
+<ion-list>
+<ion-item class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}" >
+<div class="item">
+	<h2>{{item.name}}</h2>
+	<p>{{item.category}}</p>
+</div>
+<div class="item item-body">
+	<p>
+		{{item.description}}
+	</p>
+	<p>
+		<p>{{item.type | slackType}} / {{item.user_username}} 님</p>
+	</p>
+</div>
+</ion-item>
 
-	</ion-list>
-	<ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>
+</ion-list>
+<ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>
 
 </ion-content>
 </ion-view>
