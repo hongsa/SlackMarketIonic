@@ -92,7 +92,7 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('sendInvite', function($http, $window){
+.factory('sendInvite', function($http, $window, $ionicPopup){
   // var BASE_URL = "http://127.0.0.1:8000";
   var BASE_URL = "http://slack.jikbakguri.com";
 
@@ -104,11 +104,17 @@ angular.module('starter.services', [])
       console.log(data)
       return $http.post(BASE_URL+'/invite/', data).then(function(resp){
         console.log(resp);
-        alert("Invitation has been sent.")
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Invitation has been sent.'
+       });
         return true;
       },
       function(err) {
-        alert("Sending fails, please check again.")
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Sending fails, please check again.'
+       });
         return false
       })
 

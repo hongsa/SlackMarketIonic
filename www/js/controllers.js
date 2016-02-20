@@ -64,7 +64,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 })
 
-.controller('LoginCtrl', function($scope, $state, $http, $q, $window) {
+.controller('LoginCtrl', function($scope, $state, $http, $q, $window, $ionicPopup) {
   $scope.user = {};
 
   $scope.logIn = function(user){
@@ -91,13 +91,23 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     },
     function(err) {
       if(err.status === 403){
-        alert('Password Error!')
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Password Error!'
+       });
+
       }
       else if(err.status === 404){
-        alert('Email is not found!')
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Email is not found!'
+       });
       }
       else{
-        alert('Facebook Login Please!')
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Facebook Login Please!'
+       });
       }
     })
 
@@ -105,7 +115,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 })
 
-.controller('SignupCtrl', function($scope, $state, $http, $window, $q) {
+.controller('SignupCtrl', function($scope, $state, $http, $window, $q, $ionicPopup) {
   $scope.user = {};
 
   $scope.signUp = function(user){
@@ -135,13 +145,22 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       console.error('ERR', err);
 
       if(err.data === 'email'){
-        alert('Email overlapped!')
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Email overlapped!'
+       });
       }
       else if(err.data === 'username'){
-        alert('Username overlapped!')
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Username overlapped!'
+       });
       }
       else{
-        alert('Error!')
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Error'
+       });
       }
 
 
@@ -208,7 +227,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   }
 })
 
-.controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window, sendInvite) {
+.controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window, sendInvite, $ionicPopup) {
   var slackId = $stateParams.slackId;
 
   $http.get(baseurl + '/slacks/'+ slackId +'/').then(function(resp) {
@@ -236,7 +255,11 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     },
     function(err) {
       console.error('ERR', err);
-      alert('Already registered!');
+      $ionicPopup.alert({
+       title: 'Alert',
+       template: 'Already registered!'
+     });
+
     })
 
   }
@@ -323,7 +346,7 @@ $scope.doRefresh = function() {
 
 })
 
-.controller('MySlacksDetailCtrl', function($scope, $stateParams, $http, sendInvite) {
+.controller('MySlacksDetailCtrl', function($scope, $stateParams, $http, sendInvite, $ionicPopup) {
   var slackId = $stateParams.slackId;
   $http.get(baseurl + '/myslacks/' + slackId + '/').then(function(resp) {
     $scope.mySlacksRegister ={};
@@ -344,7 +367,10 @@ $scope.doRefresh = function() {
         sendInvite.SendInvite(slackId)
       }
       else{
-        alert('Refuse success!');
+        $ionicPopup.alert({
+         title: 'Alert',
+         template: 'Refuse success!'
+       });
       }
     },
     function(err) {
@@ -368,7 +394,7 @@ $scope.doRefresh = function() {
 })
 
 
-.controller('AddSlackCtrl', function($scope, $window, $state, $http) {
+.controller('AddSlackCtrl', function($scope, $window, $state, $http, $ionicPopup) {
 
   $scope.register = function(slack){
     $scope.slack = slack
@@ -377,14 +403,20 @@ $scope.doRefresh = function() {
 
     $http.post(baseurl + '/slregister/', slack).then(function(resp) {
 
-      console.log('Success',resp);
       console.log(resp)
-      alert('Slack upload success!');
+      $ionicPopup.alert({
+       title: 'Alert',
+       template: 'Slack upload success!'
+     });
+
       $state.go('tab.slack');
     },
     function(err) {
       console.error('ERR', err);
-      alert('Fail!');
+      $ionicPopup.alert({
+       title: 'Alert',
+       template: 'Fail!'
+     });
     })
   }
 
