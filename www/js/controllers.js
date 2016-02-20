@@ -197,13 +197,13 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 .filter("slackType",function(){
   return function(value){
     if (value === 0){
-      return "Public invite"
+      return "Public invitation"
     }
     else if(value === 1){
-      return "Private invite"
+      return "Private invitation"
     }
     else{
-      return "invite impossible"
+      return "invitation impossible"
     }
   }
 })
@@ -276,10 +276,10 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 .filter("registerType",function(){
   return function(value){
-    if (value == 0){
+    if (value === 0){
       return "Waiting"
     }
-    else if(value == 1){
+    else if(value === 1){
       return "Invite success"
     }
     else{
@@ -339,7 +339,7 @@ $scope.doRefresh = function() {
     console.log($scope.information)
     $http.post(baseurl + '/myslacks/' + slackId + '/', information).then(function(resp) {
       console.log('Success',resp);
-      if(resp.data == 1){
+      if(resp.data === 1){
         console.log("gogo")
         sendInvite.SendInvite(slackId)
       }
@@ -364,7 +364,6 @@ $scope.doRefresh = function() {
     $window.localStorage.removeItem('fbAccessToken');
     $state.go('auth.walkthrough');
   }
-
 
 })
 

@@ -14,14 +14,14 @@
 		{{item.description}}
 	</p>
 	<p>
-		{{item.type | registerType}} / {{item.created | date:'MM-dd'}}
+		{{item.created | date:'MM-dd'}}
 	</p>
 	<p class="row">
 		<span class="col col-50">
-		<button class="button button-positive button-block" ng-click="check(1,item.id)">승인</button>
+		<button class="button button-positive button-block" ng-click="check(1,item.id)">Approval</button>
 		</span>
 		<span class="col col-50">
-		<button class="button button-assertive button-block" ng-click="check(2,item.id)">거절</button>
+		<button class="button button-assertive button-block" ng-click="check(2,item.id)">Reject</button>
 		</span>
 	</p>
 </div>
