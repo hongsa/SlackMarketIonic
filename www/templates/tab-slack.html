@@ -1,39 +1,46 @@
-<ion-view view-title="Slack lists">
-<ion-content class="padding" ng-controller="SlackCtrl">
+<ion-view view-title="Slack lists" class="wrapper">
+<ion-content class="padding" ng-controller="SlackCtrl" scroll="true">
 
-<ion-header-bar class="bar-positive">
+<!-- <ion-header-bar class="bar-positive">
 <a href="#">
 	<h1 class="title" ui-sref="addSlack">Add Slack</h1>
 </a>
 </ion-header-bar>
 <br>
-<br>
+<br> -->
 
 <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
 </ion-refresher>
 
-<!-- <button class="button button-balanced button-block" ui-sref="addSlack"> -->
-<!-- Add Slack -->
-<!-- </button> -->
 
 <ion-list>
-<ion-item class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}" >
-<div class="item">
-	<h2>{{item.name}}</h2>
-	<p>{{item.category}}</p>
+<ion-item class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}">
+<div class="item row" style="padding: 5px;">
+	<h2 class="col col-75">{{item.name}}</h2>
+	<p class="col">{{item.user_username}}</p>
 </div>
-<div class="item item-body">
+<div class="item item-body" style="padding: 5px;">
 	<p>
 		{{item.description}}
 	</p>
-	<p>
-		<p>{{item.type | slackType}} / {{item.user_username}} 님</p>
-	</p>
+	<div class="row" style="font-size: 13px;">
+		<span class="col col-50">{{item.category}}</span>
+		<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
+	</div>
 </div>
 </ion-item>
-
 </ion-list>
-<ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>
 
+<ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>
 </ion-content>
+
 </ion-view>
+
+<ion-content scroll="false">
+<div class="bar bar-footer">
+	<a href="#">
+		<h1 class="title ion-plus-circled" ui-sref="addSlack" style="color:red;">&nbsp;Slack</h1>
+	</a>
+</div>
+</ion-content>
+

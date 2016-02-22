@@ -7,16 +7,20 @@
 <ion-list>
 
 <ion-item class="list card" href="#/tab/mySlacks/{{item.id}}" ng-repeat="item in mySlacks">
-<div class="item">
+<div class="item" style="padding: 5px;">
 	<h2>{{item.name}}</h2>
 </div>
-<div class="item item-body">
+<div class="item item-body" style="padding: 5px;">
 	<p>
 		{{item.description}}
 	</p>
-	<p>
-		{{item.type | slackType}} / {{item.created | date:'MM-dd'}}
-	</p>
+
+	<div class="row" style="font-size: 13px;">
+		<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
+		<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
+	</div>
+
+
 </div>
 
 </ion-item>

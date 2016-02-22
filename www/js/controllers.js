@@ -179,7 +179,6 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 })
 
 
-
 // slack 부분 시작
 
 .controller('SlackCtrl', function($scope, $http, SlackList) {
@@ -210,6 +209,24 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
+
+  $scope.typeColor=function(myValue){
+    var num = parseInt(myValue);
+
+    if(num === 0){
+      var css = { 'color':'blue' };
+      return css;
+    }
+    else if( num === 1){
+      var css = { 'color':'orange' };
+      return css;
+    }
+    else{
+      var css = { 'color':'red' };
+      return css;
+    }
+  }
+
 
 })
 
@@ -246,10 +263,12 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     $http.post(baseurl + '/register/', user_register).then(function(resp) {
 
       console.log(resp)
-      alert('Register Success!');
+      $ionicPopup.alert({
+       title: 'Alert',
+       template: 'Register Success!'
+     });
       if($scope.slack.data[0].type === 0){
         sendInvite.SendInvite($scope.slack.data[0].id);
-        alert('Invitating email has been sent. Please check your email.');
       }
 
     },
@@ -261,8 +280,24 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
      });
 
     })
-
   }
+  $scope.typeColor=function(myValue){
+    var num = parseInt(myValue);
+
+    if(num === 0){
+      var css = { 'color':'blue' };
+      return css;
+    }
+    else if( num === 1){
+      var css = { 'color':'orange' };
+      return css;
+    }
+    else{
+      var css = { 'color':'red' };
+      return css;
+    }
+  }
+
 })
 
 .controller('MyRegistersCtrl', function($scope, $http, $window, myRegisterList) {
@@ -293,6 +328,25 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
+
+  $scope.typeColor=function(myValue){
+    var num = parseInt(myValue);
+
+    if(num === 0){
+      var css = { 'color':'gray' };
+      return css;
+    }
+    else if( num === 1){
+      var css = { 'color':'blue' };
+      return css;
+    }
+    else{
+      var css = { 'color':'red' };
+      return css;
+    }
+  }
+
+
 
 
 })
@@ -344,6 +398,25 @@ $scope.doRefresh = function() {
   });
 };
 
+$scope.typeColor=function(myValue){
+  var num = parseInt(myValue);
+
+  if(num === 0){
+    var css = { 'color':'blue' };
+    return css;
+  }
+  else if( num === 1){
+    var css = { 'color':'orange' };
+    return css;
+  }
+  else{
+    var css = { 'color':'red' };
+    return css;
+  }
+}
+
+
+
 })
 
 .controller('MySlacksDetailCtrl', function($scope, $stateParams, $http, sendInvite, $ionicPopup) {
@@ -382,6 +455,10 @@ $scope.doRefresh = function() {
 
 
 .controller('SettingsCtrl', function($scope, $window, $state, $http) {
+
+  $scope.user = {'username': $window.localStorage.username}
+
+
 
   $scope.logout = function () {
     $window.localStorage.removeItem('token');

@@ -13,9 +13,13 @@
 	<p>
 		{{item.description}}
 	</p>
-	<p>
-		{{item.type | registerType}} / {{item.created | date:'MM-dd'}}
-	</p>
+
+	<div class="row" style="font-size: 13px;">
+		<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
+		<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | registerType}}</span>
+	</div>
+
+
 </div>
 
 </ion-item>
