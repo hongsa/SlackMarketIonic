@@ -214,7 +214,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     var num = parseInt(myValue);
 
     if(num === 0){
-      var css = { 'color':'blue' };
+      var css = { 'color':'rgb(0, 186, 210)' };
       return css;
     }
     else if( num === 1){
@@ -225,6 +225,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       var css = { 'color':'red' };
       return css;
     }
+    
   }
 
 
@@ -285,7 +286,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     var num = parseInt(myValue);
 
     if(num === 0){
-      var css = { 'color':'blue' };
+      var css = { 'color':'rgb(0, 186, 210)' };
       return css;
     }
     else if( num === 1){
@@ -337,7 +338,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       return css;
     }
     else if( num === 1){
-      var css = { 'color':'blue' };
+      var css = { 'color':'rgb(0, 186, 210)' };
       return css;
     }
     else{
@@ -400,9 +401,8 @@ $scope.doRefresh = function() {
 
 $scope.typeColor=function(myValue){
   var num = parseInt(myValue);
-
   if(num === 0){
-    var css = { 'color':'blue' };
+    var css = { 'color':'rgb(0, 186, 210)' };
     return css;
   }
   else if( num === 1){

@@ -1,4 +1,4 @@
-<ion-view view-title="Slack lists" class="wrapper">
+<ion-view view-title="Slack lists" class="wrapper" style="background-color: #f1f1f1;">
 <ion-content class="padding" ng-controller="SlackCtrl" scroll="true">
 
 <!-- <ion-header-bar class="bar-positive">
@@ -14,21 +14,23 @@
 
 
 <ion-list>
-<ion-item class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}">
-<div class="item row" style="padding: 5px;">
-	<h2 class="col col-75">{{item.name}}</h2>
-	<p class="col">{{item.user_username}}</p>
+<div class="list card" ng-repeat="item in slacks" href="#/tab/slack/{{item.id}}">
+	<a href="#/tab/slack/{{item.id}}" style="text-decoration: none;">
+		<div class="item row card_upper">
+			<h2 class="col col-75">{{item.name}}</h2>
+			<p class="col">{{item.user_username}}</p>
+		</div>
+		<div class="item item-body">
+			<p>
+				{{item.description}}
+			</p>
+			<div class="row" style="font-size: 13px;">
+				<span class="col col-50">{{item.category}}</span>
+				<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
+			</div>
+		</div>
+	</a>
 </div>
-<div class="item item-body" style="padding: 5px;">
-	<p>
-		{{item.description}}
-	</p>
-	<div class="row" style="font-size: 13px;">
-		<span class="col col-50">{{item.category}}</span>
-		<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
-	</div>
-</div>
-</ion-item>
 </ion-list>
 
 <ion-infinite-scroll on-infinite="loadMore()" distance="5%" ng-if="!noMoreItemsAvailable"></ion-infinite-scroll>

@@ -6,24 +6,25 @@
 
 <ion-list>
 
-<ion-item class="list card" href="#/tab/mySlacks/{{item.id}}" ng-repeat="item in mySlacks">
-<div class="item" style="padding: 5px;">
-	<h2>{{item.name}}</h2>
-</div>
-<div class="item item-body" style="padding: 5px;">
-	<p>
-		{{item.description}}
-	</p>
+<div class="list card" ng-repeat="item in mySlacks">
+	<a href="#/tab/mySlacks/{{item.id}}"  style="text-decoration: none;">
+		<div class="item card_upper">
+			<h2>{{item.name}}</h2>
+		</div>
+		<div class="item item-body">
+			<p>
+				{{item.description}}
+			</p>
 
-	<div class="row" style="font-size: 13px;">
-		<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
-		<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
+			<div class="row" style="font-size: 13px;">
+				<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
+				<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
+			</div>
+
+
+		</div>
+
 	</div>
-
-
-</div>
-
-</ion-item>
 
 </ion-list>
 
