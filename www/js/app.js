@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngOpenFB','ngStorage'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngOpenFB', 'ngStorage', 'typeFilters'])
 
 .run(function($ionicPlatform, ngFB, $http, $window) {
   ngFB.init({appId: '1668219540123468', tokenStore: $window.localStorage, accessToken : $window.localStorage.fbAccessToken});
@@ -147,7 +147,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
 
 
   // if none of the above states are matched, use this as the fallback
-    // $urlRouterProvider.otherwise('/tab/slack');
     $urlRouterProvider.otherwise('/auth/walkthrough');
 
   });

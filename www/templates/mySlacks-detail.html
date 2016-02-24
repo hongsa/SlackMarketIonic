@@ -1,32 +1,31 @@
-<ion-view view-title="">
+<ion-view view-title="" class="background_default">
 <ion-content class="padding">
 
 <ion-list ng-controller="MySlacksDetailCtrl" >
 
 <div class="card list" ng-repeat="item in mySlacksRegister.data">
-<div class="item card_upper">
-	<h2>
-		{{item.user}}<abbr></abbr>
-	</h2>
+	<div class="item card_upper">
+		<h2>
+			{{item.user}}<abbr></abbr>
+		</h2>
+	</div>
+	<div class="item item-body">
+		<p>
+			{{item.description}}
+		</p>
+		<p>
+			{{item.created | date:'MM-dd'}}
+		</p>
+		<p class="row">
+			<span class="col col-50">
+				<button class="button button-positive button-block" ng-click="check(1,item.id)">Approval</button>
+			</span>
+			<span class="col col-50">
+				<button class="button button-assertive button-block" ng-click="check(2,item.id)">Reject</button>
+			</span>
+		</p>
+	</div>
 </div>
-<div class="item item-body">
-	<p>
-		{{item.description}}
-	</p>
-	<p>
-		{{item.created | date:'MM-dd'}}
-	</p>
-	<p class="row">
-		<span class="col col-50">
-		<button class="button button-positive button-block" ng-click="check(1,item.id)">Approval</button>
-		</span>
-		<span class="col col-50">
-		<button class="button button-assertive button-block" ng-click="check(2,item.id)">Reject</button>
-		</span>
-	</p>
-</div>
-</div>
-<!-- </div> -->
 
 </ion-list>
 </ion-content>

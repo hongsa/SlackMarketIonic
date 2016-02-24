@@ -1,5 +1,5 @@
-var baseurl = "http://slack.jikbakguri.com";
-// var baseurl = "http://127.0.0.1:8000";
+var BASE_URL = "http://slack.jikbakguri.com";
+// var BASE_URL = "http://127.0.0.1:8000";
 angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
 
 .controller('AuthCtrl', function($scope, $state, ngFB, $http, $q, $window) {
@@ -11,7 +11,6 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     ngFB.login({scope: 'email,public_profile,publish_actions'}).then(
       function (response) {
         if (response.status === 'connected') {
-          console.log(response.authResponse.accessToken)
           console.log('Facebook login succeeded');
           $scope.goServer();
         } 
@@ -33,8 +32,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
       var deferred = $q.defer();
 
     // ajax 시작
-    $http.post(baseurl +'/facebook/', user).then(function(resp) {
-      console.log(resp)
+    $http.post(BASE_URL +'/facebook/', user).then(function(resp) {
 
       var token = resp.data.token;
       var username = resp.data.username;
@@ -69,11 +67,9 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
   $scope.logIn = function(user){
     $scope.user = {'email':user.email, 'password':user.password};
-    console.log($scope.user)
     var deferred = $q.defer();
 
-    $http.post(baseurl + '/login/',user).then(function(resp) {
-      console.log(resp)
+    $http.post(BASE_URL + '/login/',user).then(function(resp) {
 
       var token = resp.data.token;
       var username = resp.data.username;
@@ -122,8 +118,7 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
     $scope.user = {'email':user.email, 'username':user.username, 'password':user.password};
     var deferred = $q.defer();
     
-    $http.post(baseurl + '/signup/',user).then(function(resp) {
-      console.log(resp)
+    $http.post(BASE_URL + '/signup/',user).then(function(resp) {
       var token = resp.data.token;
       var username = resp.data.username;
       var userid = resp.data.id;
@@ -162,9 +157,6 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
          template: 'Error'
        });
       }
-
-
-
     })
   };
 
@@ -181,19 +173,20 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
 // slack 부분 시작
 
-.controller('SlackCtrl', function($scope, $http, SlackList) {
+.controller('SlackCtrl', function($scope, $http, ListGet, typeColor) {
 
   $scope.slacks = [];
   $scope.noMoreItemsAvailable =false;
   var num = 0;
+  var AJAX_URL = "/lists/";
 
   $scope.loadMore = function() {
-    SlackList.ListMore(num).then(function(slacks){
+    ListGet.ListMore(AJAX_URL, num).then(function(slacks){
       if(slacks === 404){
         $scope.noMoreItemsAvailable = true;
       }
       else{
-        num += 1
+        num += 1;
         $scope.slacks = $scope.slacks.concat(slacks);
         $scope.$broadcast('scroll.infiniteScrollComplete');
       }
@@ -201,54 +194,25 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   };
 
   $scope.doRefresh = function() {
-    num = 0
+    num = 0;
     $scope.noMoreItemsAvailable = false;
-    SlackList.ListMore(num).then(function(slacks){
-      num += 1
+    ListGet.ListMore(AJAX_URL, num).then(function(slacks){
+      num += 1;
       $scope.slacks = slacks;
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
-  $scope.typeColor=function(myValue){
-    var num = parseInt(myValue);
-
-    if(num === 0){
-      var css = { 'color':'rgb(0, 186, 210)' };
-      return css;
-    }
-    else if( num === 1){
-      var css = { 'color':'orange' };
-      return css;
-    }
-    else{
-      var css = { 'color':'red' };
-      return css;
-    }
-    
-  }
-
+  $scope.typeColor = function(value){
+    return typeColor.Slack(value);
+  };
 
 })
 
-.filter("slackType",function(){
-  return function(value){
-    if (value === 0){
-      return "Public invitation"
-    }
-    else if(value === 1){
-      return "Private invitation"
-    }
-    else{
-      return "invitation impossible"
-    }
-  }
-})
-
-.controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window, sendInvite, $ionicPopup) {
+.controller('SlackDetailCtrl', function($scope, $stateParams, $http, $window, sendInvite, $ionicPopup, typeColor) {
   var slackId = $stateParams.slackId;
 
-  $http.get(baseurl + '/slacks/'+ slackId +'/').then(function(resp) {
+  $http.get(BASE_URL + '/slacks/'+ slackId +'/').then(function(resp) {
     $scope.slack ={};
     console.log('Success',resp);
     $scope.slack = resp;
@@ -260,18 +224,16 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   $scope.register = function(text){
 
     var user_register = {'slack_id': $scope.slack.data[0].id, 'user_id' : $window.localStorage.userid, 'description':text.description};
-    console.log(user_register)
-    $http.post(baseurl + '/register/', user_register).then(function(resp) {
+    $http.post(BASE_URL + '/register/', user_register).then(function(resp) {
 
-      console.log(resp)
       $ionicPopup.alert({
        title: 'Alert',
        template: 'Register Success!'
      });
+
       if($scope.slack.data[0].type === 0){
         sendInvite.SendInvite($scope.slack.data[0].id);
       }
-
     },
     function(err) {
       console.error('ERR', err);
@@ -282,38 +244,26 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 
     })
   }
-  $scope.typeColor=function(myValue){
-    var num = parseInt(myValue);
-
-    if(num === 0){
-      var css = { 'color':'rgb(0, 186, 210)' };
-      return css;
-    }
-    else if( num === 1){
-      var css = { 'color':'orange' };
-      return css;
-    }
-    else{
-      var css = { 'color':'red' };
-      return css;
-    }
-  }
+  $scope.typeColor = function(value){
+    return typeColor.Slack(value);
+  };
 
 })
 
-.controller('MyRegistersCtrl', function($scope, $http, $window, myRegisterList) {
+.controller('MyRegistersCtrl', function($scope, $http, $window, ListPost, typeColor) {
 
   $scope.myRegisters = [];
   $scope.noMoreItemsAvailable =false;
   var num = 0;
+  var AJAX_URL = "/myregisters/";
 
   $scope.loadMore = function() {
-    myRegisterList.ListMore(num).then(function(myRegisters){
+    ListPost.ListMore(AJAX_URL, num).then(function(myRegisters){
       if(myRegisters === 404){
         $scope.noMoreItemsAvailable = true;
       }
       else{
-        num += 1
+        num += 1;
         $scope.myRegisters = $scope.myRegisters.concat(myRegisters);
         $scope.$broadcast('scroll.infiniteScrollComplete');
       }
@@ -321,68 +271,41 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
   };
 
   $scope.doRefresh = function() {
-    num = 0
+    num = 0;
     $scope.noMoreItemsAvailable = false;
-    myRegisterList.ListMore(num).then(function(myRegisters){
-      num += 1
+    ListPost.ListMore(AJAX_URL, num).then(function(myRegisters){
+      num += 1;
       $scope.myRegisters = myRegisters;
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
-  $scope.typeColor=function(myValue){
-    var num = parseInt(myValue);
-
-    if(num === 0){
-      var css = { 'color':'gray' };
-      return css;
-    }
-    else if( num === 1){
-      var css = { 'color':'rgb(0, 186, 210)' };
-      return css;
-    }
-    else{
-      var css = { 'color':'red' };
-      return css;
-    }
-  }
-
+  $scope.typeColor = function(value){
+    return typeColor.Register(value);
+  };
 
 
 
 })
 
-.filter("registerType",function(){
-  return function(value){
-    if (value === 0){
-      return "Waiting"
-    }
-    else if(value === 1){
-      return "Invite success"
-    }
-    else{
-      return "Invite refusal"
-    }
-  }
-})
 .controller('MyRegistersDetailCtrl', function($scope, $stateParams) {
 })
 
 
-
-.controller('MySlacksCtrl', function($scope, $http, $window, mySlackList) {
+.controller('MySlacksCtrl', function($scope, $http, $window, ListPost, typeColor) {
 
  $scope.mySlacks = [];
  $scope.noMoreItemsAvailable =false;
  var num = 0;
+ var AJAX_URL = "/myslackslist/";
 
  $scope.loadMore = function() {
-  mySlackList.ListMore(num).then(function(mySlacks){
+  ListPost.ListMore(AJAX_URL, num).then(function(mySlacks){
     if(mySlacks === 404){
       $scope.noMoreItemsAvailable = true;
     }
     else{
-      num += 1
+      num += 1;
       $scope.mySlacks = $scope.mySlacks.concat(mySlacks);
       $scope.$broadcast('scroll.infiniteScrollComplete');
     }
@@ -392,28 +315,16 @@ angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage
 $scope.doRefresh = function() {
   num = 0
   $scope.noMoreItemsAvailable = false;
-  mySlackList.ListMore(num).then(function(mySlacks){
-    num += 1
+  ListPost.ListMore(AJAX_URL, num).then(function(mySlacks){
+    num += 1;
     $scope.mySlacks = mySlacks;
     $scope.$broadcast('scroll.refreshComplete');
   });
 };
 
-$scope.typeColor=function(myValue){
-  var num = parseInt(myValue);
-  if(num === 0){
-    var css = { 'color':'rgb(0, 186, 210)' };
-    return css;
-  }
-  else if( num === 1){
-    var css = { 'color':'orange' };
-    return css;
-  }
-  else{
-    var css = { 'color':'red' };
-    return css;
-  }
-}
+$scope.typeColor = function(value){
+  return typeColor.Slack(value);
+};
 
 
 
@@ -421,7 +332,7 @@ $scope.typeColor=function(myValue){
 
 .controller('MySlacksDetailCtrl', function($scope, $stateParams, $http, sendInvite, $ionicPopup) {
   var slackId = $stateParams.slackId;
-  $http.get(baseurl + '/myslacks/' + slackId + '/').then(function(resp) {
+  $http.get(BASE_URL + '/myslacks/' + slackId + '/').then(function(resp) {
     $scope.mySlacksRegister ={};
     console.log('Success',resp);
     $scope.mySlacksRegister = resp;
@@ -432,12 +343,10 @@ $scope.typeColor=function(myValue){
 
   $scope.check = function(num,id){
     var information = {'register_id' : id, 'num' : num};
-    console.log($scope.information)
-    $http.post(baseurl + '/myslacks/' + slackId + '/', information).then(function(resp) {
+    $http.post(BASE_URL + '/myslacks/' + slackId + '/', information).then(function(resp) {
       console.log('Success',resp);
       if(resp.data === 1){
-        console.log("gogo")
-        sendInvite.SendInvite(slackId)
+        sendInvite.SendInvite(slackId);
       }
       else{
         $ionicPopup.alert({
@@ -456,9 +365,7 @@ $scope.typeColor=function(myValue){
 
 .controller('SettingsCtrl', function($scope, $window, $state, $http) {
 
-  $scope.user = {'username': $window.localStorage.username}
-
-
+  $scope.user = {'username': $window.localStorage.username};
 
   $scope.logout = function () {
     $window.localStorage.removeItem('token');
@@ -466,21 +373,18 @@ $scope.typeColor=function(myValue){
     $window.localStorage.removeItem('userid');
     $window.localStorage.removeItem('fbAccessToken');
     $state.go('auth.walkthrough');
-  }
-
+  };
 })
 
 
 .controller('AddSlackCtrl', function($scope, $window, $state, $http, $ionicPopup) {
 
   $scope.register = function(slack){
-    $scope.slack = slack
+    $scope.slack = slack;
     $scope.slack.user_id = $window.localStorage.userid;
-    console.log(slack)
 
-    $http.post(baseurl + '/slregister/', slack).then(function(resp) {
+    $http.post(BASE_URL + '/slregister/', slack).then(function(resp) {
 
-      console.log(resp)
       $ionicPopup.alert({
        title: 'Alert',
        template: 'Slack upload success!'

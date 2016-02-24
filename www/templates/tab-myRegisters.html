@@ -1,4 +1,4 @@
-<ion-view view-title="My registers">
+<ion-view view-title="My registers" class="background_default">
 <ion-content class="padding" ng-controller="MyRegistersCtrl" >
 <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
 </ion-refresher>
@@ -6,21 +6,18 @@
 <ion-list>
 
 <div class="list card" ng-repeat="item in myRegisters">
-<div class="item card_upper">
-	<h2>{{item.slack}}</h2>
-</div>
-<div class="item item-body">
-	<p>
-		{{item.description}}
-	</p>
-
-	<div class="row" style="font-size: 13px;">
-		<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
-		<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | registerType}}</span>
+	<div class="item card_upper">
+		<h2>{{item.slack}}</h2>
 	</div>
-
-
-</div>
+	<div class="item item-body">
+		<p>
+			{{item.description}}
+		</p>
+		<div class="row" style="font-size: 13px;">
+			<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
+			<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | registerType}}</span>
+		</div>
+	</div>
 
 </div>
 

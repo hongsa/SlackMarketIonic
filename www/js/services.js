@@ -23,74 +23,90 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('SlackList', function($http){
+.factory('ListGet', function($http){
   // var BASE_URL = "http://127.0.0.1:8000";
   var BASE_URL = "http://slack.jikbakguri.com";
-  var slacks = [];
+  var lists = [];
 
   return {
 
-    ListMore: function(num){
-      return $http.get(BASE_URL+'/lists/'+ num +'/').then(function(resp){
-        slacks = resp.data;
-        return slacks;
+    ListMore: function(AJAX_URL, num){
+      return $http.get(BASE_URL+ AJAX_URL+ num +'/').then(function(resp){
+        lists = resp.data;
+        return lists;
       },
       function(err) {
-        slacks = err.status
-        return slacks
+        lists = err.status;
+        return lists;
       })
 
     }
   }
 })
 
-.factory('myRegisterList', function($http, $window){
+.factory('ListPost', function($http, $window){
   // var BASE_URL = "http://127.0.0.1:8000";
   var BASE_URL = "http://slack.jikbakguri.com";
-  var myRegisters = [];
+  var lists = [];
 
   return {
 
-    ListMore: function(num){
+    ListMore: function(AJAX_URL, num){
       var user_id = $window.localStorage.userid;
-      console.log(user_id)
-      return $http.post(BASE_URL+'/myregisters/'+ num +'/', user_id).then(function(resp){
-        console.log(resp);
-        myRegisters = resp.data;
-        return myRegisters;
+      return $http.post(BASE_URL+ AJAX_URL + num +'/', user_id).then(function(resp){
+        lists = resp.data;
+        return lists;
       },
       function(err) {
-        myRegisters = err.status
-        return myRegisters
+        lists = err.status;
+        return lists;
       })
 
     }
   }
 })
 
-.factory('mySlackList', function($http, $window){
-  // var BASE_URL = "http://127.0.0.1:8000";
-  var BASE_URL = "http://slack.jikbakguri.com";
-  var mySlacks = [];
+.factory('typeColor', function(){
 
   return {
 
-    ListMore: function(num){
-      var user_id = $window.localStorage.userid;
-      console.log(user_id)
-      return $http.post(BASE_URL+'/myslackslist/'+ num +'/', user_id).then(function(resp){
-        console.log(resp);
-        mySlacks = resp.data;
-        return mySlacks;
-      },
-      function(err) {
-        mySlacks = err.status
-        return mySlacks
-      })
+    Slack : function(value){
+      var num = parseInt(value);
+      if(num === 0){
+        var css = { 'color':'rgb(0, 186, 210)' };
+        return css;
+      }
+      else if( num === 1){
+        var css = { 'color':'orange' };
+        return css;
+      }
+      else{
+        var css = { 'color':'red' };
+        return css;
+      }
+    },
 
+    Register : function(value){
+      var num = parseInt(value);
+
+      if(num === 0){
+        var css = { 'color':'gray' };
+        return css;
+      }
+      else if( num === 1){
+        var css = { 'color':'rgb(0, 186, 210)' };
+        return css;
+      }
+      else{
+        var css = { 'color':'red' };
+        return css;
+      }
     }
+
   }
+
 })
+
 
 .factory('sendInvite', function($http, $window, $ionicPopup){
   // var BASE_URL = "http://127.0.0.1:8000";
@@ -100,10 +116,8 @@ angular.module('starter.services', [])
 
     SendInvite: function(slackid){
       var user_id = $window.localStorage.userid;
-      var data ={'user_id' : user_id, 'slack_id' : slackid}
-      console.log(data)
+      var data ={'user_id' : user_id, 'slack_id' : slackid};
       return $http.post(BASE_URL+'/invite/', data).then(function(resp){
-        console.log(resp);
         $ionicPopup.alert({
          title: 'Alert',
          template: 'Invitation has been sent.'
@@ -115,7 +129,7 @@ angular.module('starter.services', [])
          title: 'Alert',
          template: 'Sending fails, please check again.'
        });
-        return false
+        return false;
       })
 
     }

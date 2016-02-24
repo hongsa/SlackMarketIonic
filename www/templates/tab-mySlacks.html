@@ -1,4 +1,4 @@
-<ion-view view-title="My slacks">
+<ion-view view-title="My slacks" class="background_default">
 <ion-content class="padding" ng-controller="MySlacksCtrl" >
 
 <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
@@ -20,8 +20,6 @@
 				<span class="col col-50">{{item.created | date:'MM-dd'}}</span>
 				<span class="col col-50" ng-style="typeColor({{item.type}})">{{item.type | slackType}}</span>
 			</div>
-
-
 		</div>
 
 	</div>

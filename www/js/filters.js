@@ -1,30 +1,30 @@
-// angular.module('starter.controllers', ['starter.services','ngOpenFB', 'ngStorage', 'ngCookies'])
+angular.module('typeFilters', [])
 
 
-// .filter("slackType",function(){
-//   return function(value){
-//     if (value == 0){
-//       return "공개 초대"
-//     }
-//     else if(value == 1){
-//       return "승인 초대"
-//     }
-//     else{
-//       return "초대 불가"
-//     }
-//   }
-// })
+.filter("slackType",function(){
+  return function(value){
+    if (value === 0){
+      return "Public invitation"
+    }
+    else if(value === 1){
+      return "Private invitation"
+    }
+    else{
+      return "invitation impossible"
+    }
+  }
+})
 
-// .filter("registerType",function(){
-//   return function(value){
-//     if (value == 0){
-//       return "대기중"
-//     }
-//     else if(value == 1){
-//       return "초대완료"
-//     }
-//     else{
-//       return "초대거절"
-//     }
-//   }
-// })
+.filter("registerType",function(){
+  return function(value){
+    if (value === 0){
+      return "Waiting"
+    }
+    else if(value === 1){
+      return "Invite success"
+    }
+    else{
+      return "Invite refusal"
+    }
+  }
+})

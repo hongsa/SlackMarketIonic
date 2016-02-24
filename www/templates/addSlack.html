@@ -1,5 +1,5 @@
-<ion-view view-title="Add slack">
-<ion-content class="has-header" ng-controller="SettingsCtrl">
+<ion-view view-title="Add slack" class="background_default">
+<ion-content class="padding" ng-controller="SettingsCtrl">
 
 <ion-list>
 <form name="slack_register_form" class="" novalidate ng-submit="register(newSlack)">
@@ -11,57 +11,53 @@
 			<input type="text" placeholder="URL(example.slack.com)" name="url" ng-model="newSlack.url" required>
 		</label>
 		
-		<!-- <div class="row responsive-sm"> -->
 		<label class="item item-input">
 			<input type="text" placeholder="Token : Click below link (only administer)" name="token" ng-model="newSlack.token" >
 		</label>
 		<br>
-		<!-- <button class="button button-positive"> -->
 		<div class="text-center">
 			<a href="#" target="_blank" style="text-decoration:none"
 			onclick="window.open('https://api.slack.com/web#auth', '_system', 'location=yes'); return false;">
-				<span style="color:black">Checking Token</span>
-			</a>
-		</div>
-		<!-- </button> -->
-		<br>
-		<!-- </div> -->
-
-		<label class="item item-input" show-hide-container>
-			<textarea rows="10" cols="5" placeholder="Introduce your slack" name="description" ng-model="newSlack.description">
-			</textarea>
-		</label>
-
-		<label class="item item-input item-select">
-			<div class="input-label">
-				Invite type
-			</div>
-			<select ng-model="newSlack.type" ng-init="newSlack.type='0'">
-				<option value="0">Public invitation</option>
-				<option value="1">Private invitation</option>
-				<option value="2">Invitation impossible</option>
-			</select>
-		</label>
-
-		<label class="item item-input item-select">
-			<div class="input-label">
-				Category
-			</div>
-			<select ng-model="newSlack.category" ng-init="newSlack.category='Technology'">
-				<option value="Technology" selected>Technology</option>
-				<option value="Business">Business</option>
-				<option value="Design">Design</option>
-				<option value="Game">Game</option>
-				<option value="Music">Music</option>
-				<option value="Movies">Movies</option>
-				<option value="Social">Social</option>
-			</select>
-		</label>
+			<span style="color:red;">Checking Token</span>
+		</a>
 	</div>
+	<br>
 
-	<button type="submit" class="button button-assertive button-block" ng-disabled="slack_register_form.$invalid">
-		Add Slack
-	</button>
+	<label class="item item-input" show-hide-container>
+		<textarea rows="10" cols="5" placeholder="Introduce your slack" name="description" ng-model="newSlack.description">
+		</textarea>
+	</label>
+
+	<label class="item item-input item-select">
+		<div class="input-label">
+			Invite type
+		</div>
+		<select ng-model="newSlack.type" ng-init="newSlack.type='0'">
+			<option value="0">Public invitation</option>
+			<option value="1">Private invitation</option>
+			<option value="2">Invitation impossible</option>
+		</select>
+	</label>
+
+	<label class="item item-input item-select">
+		<div class="input-label">
+			Category
+		</div>
+		<select ng-model="newSlack.category" ng-init="newSlack.category='Technology'">
+			<option value="Technology" selected>Technology</option>
+			<option value="Business">Business</option>
+			<option value="Design">Design</option>
+			<option value="Game">Game</option>
+			<option value="Music">Music</option>
+			<option value="Movies">Movies</option>
+			<option value="Social">Social</option>
+		</select>
+	</label>
+</div>
+
+<button type="submit" class="button button-assertive button-block" ng-disabled="slack_register_form.$invalid">
+	Add Slack
+</button>
 </form>
 
 </ion-list>
