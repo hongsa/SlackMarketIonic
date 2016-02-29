@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngOpenFB', 'ngStorage', 'typeFilters'])
 
 .run(function($ionicPlatform, ngFB, $http, $window) {
-  ngFB.init({appId: '1668219540123468', tokenStore: $window.localStorage, accessToken : $window.localStorage.fbAccessToken});
+  ngFB.init({appId: '###', tokenStore: $window.localStorage, accessToken : $window.localStorage.fbAccessToken});
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
